@@ -1,5 +1,6 @@
 ﻿using MoneyAndGoods.Task1;
 using MoneyAndGoods.Task2;
+using MoneyAndGoods.Task3;
 using System.Text;
 
 namespace MoneyAndGoods
@@ -12,7 +13,8 @@ namespace MoneyAndGoods
             Console.InputEncoding = new UTF8Encoding(false);
 
             //Task1();
-            Task2();
+            //Task2();
+            Task3();
         }
 
         static void Task1()
@@ -170,6 +172,97 @@ namespace MoneyAndGoods
                     instrument.DisplayAllInfo();
                     Console.WriteLine();
                 }
+            }
+        }
+
+        static void Task3()
+        {
+            DecimalNumber decimalNumber = new DecimalNumber(0);
+
+            while (true)
+            {
+                try
+                {
+                    Console.WriteLine("=================================");
+                    Console.WriteLine($"Установленное число: {decimalNumber.Number}\r\n");
+                    Console.WriteLine("1. Установить число");
+                    Console.WriteLine("2. Превратить в двоичную систему");
+                    Console.WriteLine("3. Превратить в восьмеричную систему");
+                    Console.WriteLine("4. Превратить в шестнадцатеричную систему");
+                    Console.WriteLine("5. Показать все преобразования");
+                    Console.WriteLine("6. Выйти");
+                    Console.WriteLine("Выберите опцию: \r\n");
+
+                    switch (Console.ReadKey(true).KeyChar.ToString())
+                    {
+                        case "1":
+                            SetNumber(ref decimalNumber);
+                            break;
+                        case "2":
+                            ShowBinary(decimalNumber);
+                            break;
+                        case "3":
+                            ShowOctal(decimalNumber);
+                            break;
+                        case "4":
+                            ShowHex(decimalNumber);
+                            break;
+                        case "5":
+                            ShowAllConversions(decimalNumber);
+                            break;
+                        case "6":
+                            Console.WriteLine("До свидания!");
+                            return;
+                        default:
+                            Console.WriteLine("Неправильный выбор!");
+                            break;
+                    }
+
+                    Console.WriteLine("\nНажмите любую клавишу для продолжения...");
+                    Console.ReadKey();
+                    Console.Clear();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error: {ex}");
+                }
+            }
+
+            static void SetNumber(ref DecimalNumber decimalNumber)
+            {
+                Console.WriteLine("Введите целое число: ");
+                if (int.TryParse(Console.ReadLine(), out int number))
+                {
+                    decimalNumber = new DecimalNumber(number);
+                    Console.WriteLine($"Число установлено: {number}");
+                }
+                else
+                {
+                    Console.WriteLine("Ошибка: введите корректное число!");
+                }
+            }
+
+            void ShowBinary(DecimalNumber decimalNumber)
+            {
+                Console.WriteLine($"Двоичное: {decimalNumber.Number} = {decimalNumber.ToBinary()}");
+            }
+
+            void ShowOctal(DecimalNumber decimalNumber)
+            {
+                Console.WriteLine($"Восьмеричное: {decimalNumber.Number} = {decimalNumber.ToOctal()}");
+            }
+
+            void ShowHex(DecimalNumber decimalNumber)
+            {
+                Console.WriteLine($"Шестнадцатеричное: {decimalNumber.Number} = {decimalNumber.ToHex()}");
+            }
+
+            void ShowAllConversions(DecimalNumber decimalNumber)
+            {
+                Console.WriteLine("Все вместе");
+                ShowBinary(decimalNumber);
+                ShowOctal(decimalNumber);
+                ShowHex(decimalNumber);
             }
         }
     }
