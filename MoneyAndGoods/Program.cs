@@ -1,4 +1,5 @@
 ﻿using MoneyAndGoods.Task1;
+using MoneyAndGoods.Task2;
 using System.Text;
 
 namespace MoneyAndGoods
@@ -10,7 +11,8 @@ namespace MoneyAndGoods
             Console.OutputEncoding = new UTF8Encoding(false);
             Console.InputEncoding = new UTF8Encoding(false);
 
-            Task1();
+            //Task1();
+            Task2();
         }
 
         static void Task1()
@@ -72,6 +74,102 @@ namespace MoneyAndGoods
                 Console.WriteLine("\nНажмите любую клавишу для продолжения...");
                 Console.ReadKey();
                 Console.Clear();
+            }
+        }
+
+        static void Task2()
+        {
+            List<MusicalInstrument> musicalInstruments = new List<MusicalInstrument>
+            {
+                new Violin(),
+                new Trombone(),
+                new Ukulele(),
+                new Cello()
+            };
+
+            while (true)
+            {
+                try
+                {
+                    Console.WriteLine("\r\n");
+                    Console.WriteLine("===========================================");
+                    Console.WriteLine("Демонстрация музыкальных инструментов");
+                    Console.WriteLine("1. Скрипка");
+                    Console.WriteLine("2. Тромбон");
+                    Console.WriteLine("3. Укулеле");
+                    Console.WriteLine("4. Виолончель");
+                    Console.WriteLine("5. Показать все инструменты");
+                    Console.WriteLine("6. Выход");
+                    Console.WriteLine("Выберите инструмент: ");
+                    Console.WriteLine("\r\n");
+
+                    string key = Console.ReadKey(true).KeyChar.ToString();
+
+                    var answer = Int(key);
+                    if (answer.Item1 == true && (answer.Item2 >= 1 && answer.Item2 <= 4))
+                    {
+                        Console.Clear();
+                        musicalInstruments[(answer.Item2 - 1)].DisplayAllInfo();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+
+                Console.WriteLine("\nНажмите любую клавишу для продолжения...");
+                Console.ReadKey();
+                Console.Clear();
+            }
+
+            //
+            (bool, int) Int(string d)
+            {
+                int res = 0;
+                bool isDone = false;
+
+                try
+                {
+                    if (d == "5")
+                    {
+                        ShowAllInstruments();
+                        isDone = false;
+                    }
+                    else if (d == "6")
+                    {
+                        Console.Clear();
+                        Console.WriteLine("До свидания!");
+                        Environment.Exit(0);
+                    }
+                    else
+                    {
+                        res = int.Parse(d);
+                        isDone = true;
+                    }
+                }
+                catch
+                {
+                    // doesn't matter
+                    // isDone = false
+                    // something error
+                }
+
+                return (isDone, res);
+            }
+
+            //
+            void ShowAllInstruments()
+            {
+                Console.Clear();
+                Console.WriteLine("\n" + new string('=', 50));
+                Console.WriteLine("ВСЕ МУЗЫКАЛЬНЫЕ ИНСТРУМЕНТЫ");
+                Console.WriteLine(new string('=', 50));
+
+                foreach (var instrument in musicalInstruments)
+                {
+                    instrument.DisplayAllInfo();
+                    Console.WriteLine();
+                }
             }
         }
     }
