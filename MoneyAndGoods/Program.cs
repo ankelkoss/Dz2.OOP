@@ -9,6 +9,8 @@ namespace MoneyAndGoods
         {
             Console.OutputEncoding = new UTF8Encoding(false);
             Console.InputEncoding = new UTF8Encoding(false);
+
+            Task1();
         }
 
         static void Task1()
