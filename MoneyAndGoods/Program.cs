@@ -12,14 +12,58 @@ namespace MoneyAndGoods
             Console.OutputEncoding = new UTF8Encoding(false);
             Console.InputEncoding = new UTF8Encoding(false);
 
-            //Task1();
-            //Task2();
-            Task3();
+            while (true)
+            {
+                try
+                {
+                    Console.WriteLine("=================================");
+                    Console.WriteLine($"К какой задаче приступить? Нажмите соответствующую цифру на клавиатуре\r\n");
+                    Console.WriteLine("1. ООП «Гроші та товар»");
+                    Console.WriteLine("2. ООП «Музичні інструменти»");
+                    Console.WriteLine("3. Структури «Десяткове число»");
+                    Console.WriteLine("4. Завершить программу");
+                    Console.WriteLine("Выберите опцию: \r\n");
+
+                    switch (Console.ReadKey(true).KeyChar.ToString())
+                    {
+                        case "1":
+                            Console.Clear();
+                            Task1();
+                            break;
+
+                        case "2":
+                            Console.Clear();
+                            Task2();
+                            break;
+
+                        case "3":
+                            Console.Clear();
+                            Task3();
+                            break;
+
+                        case "4":
+                            Console.Clear();
+                            Console.WriteLine("До свидания!");
+                            Environment.Exit(0);
+                            break;
+
+                        default:
+                            Console.WriteLine("Неправильный выбор!");
+                            break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error: {ex}");
+                }
+            }
         }
 
         static void Task1()
         {
             (long, int) currentPrice = (10_299L, 87);
+            (long, int) currentSetNewPrice = (10_000L, 00);
+
             (long, int) increasePrice = (100L, 56);
             (long, int) decreasePrice = (257L, 98);
 
@@ -32,19 +76,20 @@ namespace MoneyAndGoods
             {
                 try
                 {
-                    Console.WriteLine("\r\n");
-                    Console.WriteLine($"Текущая цена {product.Price}");
-                    Console.WriteLine($"1. Установить 10 000.00 грн цену товара '{product.Name}'.");
-                    Console.WriteLine($"2. Увеличить цену на {increasePrice.Item1}.{increasePrice.Item2} {product.Price.Currency.ToRu()}");
-                    Console.WriteLine($"3. Уменьшить цену на {decreasePrice.Item1}.{decreasePrice.Item2} {product.Price.Currency.ToRu()}");
-                    Console.WriteLine($"4. Сравнить текущую цену с 1000.56 грн");
+                    Console.WriteLine("Нажмите соответствующую опирации цифру на клавиатуре\r\n");
+                    Console.WriteLine("===========================================");
+                    Console.WriteLine($"Текущая цена {product.Price} для '{product.Name}'\r\n");
+                    Console.WriteLine($"1. Установить {currentSetNewPrice.Item1}.{currentSetNewPrice.Item2} грн цену для товара.");
+                    Console.WriteLine($"2. Увеличить цену товара на {increasePrice.Item1}.{increasePrice.Item2} {product.Price.Currency.ToRu()}");
+                    Console.WriteLine($"3. Уменьшить цену товара на {decreasePrice.Item1}.{decreasePrice.Item2} {product.Price.Currency.ToRu()}");
+                    Console.WriteLine($"4. Сравнить текущую цену товара с 1000.56 грн");
                     Console.WriteLine($"5. Выход");
                     Console.WriteLine("\r\nВыберите опцию: \r\n");
 
                     switch (Console.ReadKey(true).KeyChar.ToString())
                     {
                         case "1":
-                            price.SetMoney(price.Currency, 10_000L, 00);
+                            price.SetMoney(price.Currency, currentSetNewPrice.Item1, currentSetNewPrice.Item2);
                             break;
 
                         case "2":
@@ -61,6 +106,7 @@ namespace MoneyAndGoods
                             break;
 
                         case "5":
+                            Console.Clear();
                             return;
 
                         default:
@@ -73,7 +119,7 @@ namespace MoneyAndGoods
                     Console.WriteLine($"Error: {ex}");
                 }
 
-                Console.WriteLine("\nНажмите любую клавишу для продолжения...");
+                Console.WriteLine("Успешная операция! \r\nНажмите любую клавишу для продолжения...");
                 Console.ReadKey();
                 Console.Clear();
             }
@@ -93,7 +139,7 @@ namespace MoneyAndGoods
             {
                 try
                 {
-                    Console.WriteLine("\r\n");
+                    Console.WriteLine("Нажмите соответствующую опирации цифру на клавиатуре\r\n");
                     Console.WriteLine("===========================================");
                     Console.WriteLine("Демонстрация музыкальных инструментов");
                     Console.WriteLine("1. Скрипка");
@@ -108,10 +154,19 @@ namespace MoneyAndGoods
                     string key = Console.ReadKey(true).KeyChar.ToString();
 
                     var answer = Int(key);
-                    if (answer.Item1 == true && (answer.Item2 >= 1 && answer.Item2 <= 4))
+                    // Item1 - успешная конвертация из стринг в инт
+                    // Item2 - нужно выйти из вайл
+                    // Item3 - нажатая кнопка (цифра) на клаве
+
+                    if (answer.Item1 == true && (answer.Item3 >= 1 && answer.Item3 <= 4))
                     {
                         Console.Clear();
-                        musicalInstruments[(answer.Item2 - 1)].DisplayAllInfo();
+                        musicalInstruments[(answer.Item3 - 1)].DisplayAllInfo();
+                    }
+                    else if(answer.Item2 == true)
+                    {
+                        Console.Clear();
+                        return;
                     }
                 }
                 catch (Exception ex)
@@ -119,16 +174,17 @@ namespace MoneyAndGoods
                     Console.WriteLine(ex.ToString());
                 }
 
-                Console.WriteLine("\nНажмите любую клавишу для продолжения...");
+                Console.WriteLine("Успешная операция! \r\nНажмите любую клавишу для продолжения...");
                 Console.ReadKey();
                 Console.Clear();
             }
 
             //
-            (bool, int) Int(string d)
+            (bool, bool, int) Int(string d)
             {
                 int res = 0;
                 bool isDone = false;
+                bool isExit = false;
 
                 try
                 {
@@ -139,14 +195,14 @@ namespace MoneyAndGoods
                     }
                     else if (d == "6")
                     {
-                        Console.Clear();
-                        Console.WriteLine("До свидания!");
-                        Environment.Exit(0);
+                        isExit = true;
+                        isDone = false;
                     }
                     else
                     {
                         res = int.Parse(d);
                         isDone = true;
+                        isExit = false;
                     }
                 }
                 catch
@@ -156,7 +212,7 @@ namespace MoneyAndGoods
                     // something error
                 }
 
-                return (isDone, res);
+                return (isDone, isExit, res);
             }
 
             //
@@ -183,7 +239,8 @@ namespace MoneyAndGoods
             {
                 try
                 {
-                    Console.WriteLine("=================================");
+                    Console.WriteLine("Нажмите соответствующую опирации цифру на клавиатуре\r\n");
+                    Console.WriteLine("===========================================");
                     Console.WriteLine($"Установленное число: {decimalNumber.Number}\r\n");
                     Console.WriteLine("1. Установить число");
                     Console.WriteLine("2. Превратить в двоичную систему");
@@ -198,27 +255,33 @@ namespace MoneyAndGoods
                         case "1":
                             SetNumber(ref decimalNumber);
                             break;
+
                         case "2":
                             ShowBinary(decimalNumber);
                             break;
+
                         case "3":
                             ShowOctal(decimalNumber);
                             break;
+
                         case "4":
                             ShowHex(decimalNumber);
                             break;
+
                         case "5":
                             ShowAllConversions(decimalNumber);
                             break;
+
                         case "6":
-                            Console.WriteLine("До свидания!");
+                            Console.Clear();
                             return;
+
                         default:
                             Console.WriteLine("Неправильный выбор!");
                             break;
                     }
 
-                    Console.WriteLine("\nНажмите любую клавишу для продолжения...");
+                    Console.WriteLine("Успешная операция! \r\nНажмите любую клавишу для продолжения...");
                     Console.ReadKey();
                     Console.Clear();
                 }
